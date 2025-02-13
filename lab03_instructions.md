@@ -126,13 +126,6 @@ void resize(int newCapacity) {
     memory leaks. Finally, update the stack reference to point to the new array 
     and adjust the capacity value accordingly.
     */
-    int* newStack = new int[newCapacity];
-    for (int i = 0; i <= top; i++) {
-        newStack[i] = stack[i];
-    }
-    delete[] stack;
-    stack = newStack;
-    capacity = newCapacity;
 }
 ```
 
@@ -154,7 +147,21 @@ void resizeAdditive(int increment) {
 
 Compare the two growth strategies based on memory efficiency and performance considerations. Which one is better? Is there a right answer to this question?
 
----
+### Task
+Modify your main function to measure the time taken for a series of push operations. Then save the timing results to a file 
+(e.g., stack_timing.csv) so that you generate a graph in Excel to visualize the differences in growth behavior.
+
+Steps to Implement:
+- Use the `Timer.h` library available on Canvas to measure the execution time of push operations.
+- - You are welcome to implement your own timing functionality too. 
+- Run experiments where you push a large number of elements into stacks using:
+- - Multiplicative growth (e.g., doubling the capacity).
+- - Additive growth (e.g., increasing capacity by a fixed amount).
+- Write the timing results to a CSV file, with columns:
+- - Number of elements
+- - Time taken (in microseconds)
+- - Growth strategy used
+- Plot the results in Excel, comparing the performance of both strategies.
 
 ## **Bonus Challenge**
 For **extra credit**, implement:
