@@ -245,22 +245,6 @@ int main() {
     cout << endl;
 
     return 0;
-
-    // Pro tips:
-    // Create increasingly larger arrays and compare the time of standard merge sort (2-way) vs k-way
-    // except choose k to be roughly log(number of elements to sort)
-    // the timings will not be indentical but they should be close (the constants matter!)
-    // Let's choose k = 64 and compare our k-way merge-soort vs our standard merge sort
-    // generate random arrays of increasing size and time both standard mergesort and 64-way mergesort
-    // Although 64-way mergesort will take longer, that doesn't mean that the complexity is any different
-    // than standard mergesort
-    // Save these timings and plot in whatever tool you like to show the x-axis containing number of elements to sort
-    // and the y-axis containing the time it took to sort
-    // make sure you are using the same random array for both (make a copy) that way one sort doesn't sort the array
-    // and the next sort is looking at presorted data
-    // Reminder: T(N) = 2*T(N/2)+N is our recurrence relation for mergesort
-    // for k-way: T(N) = K*T(N/K)+N which if you apply case 2 of the master theorem you again have nlogn behavior
-
 }
 ```
 
