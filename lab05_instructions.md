@@ -13,7 +13,7 @@ arr[] = {2, 1, 5, 3, 1, 0, 4}
 ```
 #### **Output:**
 ```
-6
+9
 ```
 
 ```
@@ -30,14 +30,14 @@ Height Representation:
 Trapped Water:
   
       #
-      #           #
+      #  W  W  W  #
       #  #  W  W  #
 #  W  #  #  W  W  #
 #  #  #  #  #  W  #
 -------------------
 2  1  5  3  1  0  4
 
-Total Trapped Water = 6 units
+Total Trapped Water = 9 units
 ```
 
 ---
