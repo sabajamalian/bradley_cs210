@@ -14,6 +14,8 @@ Given two strings `s1` and `s2`, your task is to find the **Longest Common Subse
 - **Example:**  
   For `s1 = "AGGTAB"` and `s2 = "GXTXAYB"`, the LCS is `"GTAB"`.
 
+*Important*: While a subsequence and a substring can sometimes be identical, they are not the same. A substring requires consecutive characters, whereas a subsequence only requires characters to appear in the same order, not necessarily contiguously. This is a common source of confusion so make sure you're solving for subsequences, not substrings.
+
 ### **Example**
 
 #### **Input:**
