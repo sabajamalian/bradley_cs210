@@ -1,4 +1,4 @@
-# **Lab 11: Huffman Coding – Greedy Algorithms & Trees**
+# **Lab 11: Huffman Coding – Greedy Algorithms**
 
 In this lab, you'll explore a classic **greedy algorithm** that compresses data efficiently using **Huffman Coding**. You’ll implement the core logic of Huffman coding using **priority queues (min-heaps)** and **binary trees**.
 
