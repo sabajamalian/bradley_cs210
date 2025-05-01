@@ -1,7 +1,7 @@
 
 # **Lab 13: BST vs. Red-Black Tree Performance Comparison**
 
-In this lab, you'll investigate the performance differences between a **Binary Search Tree (BST)** and a **Red-Black Tree (RBT)** by inserting and searching a large dataset of contact names. You'll use a provided dataset of 100,000 randomly generated fake contact names and phone numbers, and implement insertions and lookups in both trees. The goal is to observe the performance gap between a simple BST and a self-balancing Red-Black Tree.
+In this lab, you'll investigate the performance differences between a **Binary Search Tree (BST)** and a **Red-Black Tree (RBT)** by inserting and searching a large dataset of contact names. You'll use a provided dataset of 100,000 contacts and implement insertions and lookups in both trees. The goal is to observe the performance gap between a simple BST and a self-balancing Red-Black Tree.
 
 ---
 
@@ -9,8 +9,8 @@ In this lab, you'll investigate the performance differences between a **Binary S
 
 You're given a CSV file containing 100,000 fake contact names. Your task is to:
 
-1. Insert all contacts one row at a time into a **standard Binary Search Tree**, using a string key (`last_name,first_name`).
-2. Insert the same contacts into a **Red-Black Tree**, using a string key (`last_name,first_name`). 
+1. Insert all contacts one row at a time into a **standard Binary Search Tree**.
+2. Insert the same contacts into a **Red-Black Tree**, using the provided class template or your own implementation.
 3. Measure and compare the performance of **lookup operations** on both trees using a set of randomly selected contact names.
 
 ---
@@ -51,7 +51,7 @@ By the end of this lab, you should be able to:
 
 ### **2. Red-Black Tree Implementation**
 
-- Use the version from lecture or implement your own Templated version.
+- Use and extend the version discussed during the class.
 - Ensure that your RBT handles balancing via rotations and color flips.
 - It is strongly recommended that you **templatize** the tree class for reuse.
 
@@ -60,7 +60,7 @@ By the end of this lab, you should be able to:
 - After inserting all contacts:
   - Randomly select 1,000 contact names from the dataset.
   - Measure the **average time to search** for a contact in the BST vs. the RBT.
-  - Report the **total lookup time** and optionally, average depth if implemented.
+  - Report the **total lookup time**, **average time**, and display the top 10 slowest lookups for each.
 
 ---
 
@@ -94,7 +94,7 @@ Your `main()` should:
    - A Red-Black Tree
 3. Insert **all 100,000 contacts** into each tree.
 4. Randomly select **1,000 keys** from the dataset.
-5. Time and compare the lookup performance of both trees.
+5. Measure and compare the lookup performance using per-lookup timing:
 
 ```cpp
 int main() {
@@ -103,21 +103,51 @@ int main() {
     TreeNode* bst_root = nullptr;
     RBTree rbt;
 
-    // Insert into BST and RBT
     for (const auto& key : keys) {
         bst_insert(bst_root, key);
         rbt_insert(rbt, key);
     }
 
-    // Shuffle and select random sample
     vector<string> lookup_keys = select_random_keys(keys, 1000);
 
-    // Time lookups
-    auto bst_time = time_lookup(bst_root, lookup_keys, bst_search);
-    auto rbt_time = time_lookup(rbt, lookup_keys, rbt_search);
+    vector<double> bst_times, rbt_times;
 
-    cout << "BST Lookup Time: " << bst_time << " ms\n";
-    cout << "RBT Lookup Time: " << rbt_time << " ms\n";
+    for (const auto& key : lookup_keys) {
+        auto start = chrono::high_resolution_clock::now();
+        bst_search(bst_root, key);
+        auto end = chrono::high_resolution_clock::now();
+        bst_times.push_back(chrono::duration<double, milli>(end - start).count());
+
+        start = chrono::high_resolution_clock::now();
+        rbt_search(rbt, key);
+        end = chrono::high_resolution_clock::now();
+        rbt_times.push_back(chrono::duration<double, milli>(end - start).count());
+    }
+
+    double bst_total = accumulate(bst_times.begin(), bst_times.end(), 0.0);
+    double rbt_total = accumulate(rbt_times.begin(), rbt_times.end(), 0.0);
+
+    cout << "BST Total Lookup Time: " << bst_total << " ms\n";
+    cout << "RBT Total Lookup Time: " << rbt_total << " ms\n";
+    cout << "BST Avg Time: " << bst_total / bst_times.size() << " ms\n";
+    cout << "RBT Avg Time: " << rbt_total / rbt_times.size() << " ms\n";
+
+    vector<pair<double, string>> bst_detailed, rbt_detailed;
+    for (int i = 0; i < lookup_keys.size(); ++i) {
+        bst_detailed.emplace_back(bst_times[i], lookup_keys[i]);
+        rbt_detailed.emplace_back(rbt_times[i], lookup_keys[i]);
+    }
+
+    sort(bst_detailed.rbegin(), bst_detailed.rend());
+    sort(rbt_detailed.rbegin(), rbt_detailed.rend());
+
+    cout << "Top 10 slowest BST lookups:\n";
+    for (int i = 0; i < 10; ++i)
+        cout << bst_detailed[i].second << " - " << bst_detailed[i].first << " ms\n";
+
+    cout << "Top 10 slowest RBT lookups:\n";
+    for (int i = 0; i < 10; ++i)
+        cout << rbt_detailed[i].second << " - " << rbt_detailed[i].first << " ms\n";
 
     return 0;
 }
@@ -125,6 +155,14 @@ int main() {
 
 ---
 
+## **Helper Functions (Suggested)**
+
+```cpp
+vector<string> load_contact_keys(const string& filename);
+vector<string> select_random_keys(const vector<string>& keys, int count);
+```
+
+---
 
 ## **Extra Credit (Optional +10%)**
 
